@@ -29,11 +29,16 @@ export class Servo extends Entity {
   channel: number;
 
   @property({
-    type: ServoType,
+    type: 'number',
     required: true,
   })
-  servoType: ServoType;
+  minPulseLength: number;
 
+  @property({
+    type: 'number',
+    required: true,
+  })
+  maxPulseLength: number;
 
   constructor(data?: Partial<Servo>) {
     super(data);
