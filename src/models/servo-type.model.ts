@@ -1,7 +1,7 @@
-import {Model, model, property} from '@loopback/repository';
+import { Model, model, property } from '@loopback/repository';
 
 @model()
-export class ServoType extends Model {
+export class ServoType {
   @property({
     type: 'number',
     required: true,
@@ -15,8 +15,9 @@ export class ServoType extends Model {
   maxPulseLength: number;
 
 
-  constructor(data?: Partial<ServoType>) {
-    super(data);
+  constructor(data: ServoType) {
+    this.minPulseLength = data.minPulseLength;
+    this.maxPulseLength = data.maxPulseLength;
   }
 }
 
