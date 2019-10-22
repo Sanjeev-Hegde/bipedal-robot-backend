@@ -1,5 +1,4 @@
 import { Entity, model, property } from '@loopback/repository';
-import { ServoType } from './servo-type.model';
 
 @model()
 export class Servo extends Entity {
