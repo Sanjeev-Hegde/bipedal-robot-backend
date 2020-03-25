@@ -1,0 +1,10 @@
+{
+  "name": "bipedalRobotDB",
+  "connector": "mysql",
+  "url": "mysql://pi@localhost/bipedal_robot",
+  "host": "localhost",
+  "port": 3306,
+  "user": "pi",
+  "password": "",
+  "database": "bipedal_robot"
+}

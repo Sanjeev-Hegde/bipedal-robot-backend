@@ -4,8 +4,8 @@ import {
   LifeCycleObserver,
   ValueOrPromise,
 } from '@loopback/core';
-import {juggler} from '@loopback/repository';
-import * as config from './bipedal-robot-db.datasource.json';
+import { juggler } from '@loopback/repository';
+import * as config from './bipedal-robot-db.datasource.config.json';
 
 @lifeCycleObserver('datasource')
 export class BipedalRobotDbDataSource extends juggler.DataSource
@@ -13,7 +13,7 @@ export class BipedalRobotDbDataSource extends juggler.DataSource
   static dataSourceName = 'bipedalRobotDB';
 
   constructor(
-    @inject('datasources.config.bipedalRobotDB', {optional: true})
+    @inject('datasources.config.bipedalRobotDB', { optional: true })
     dsConfig: object = config,
   ) {
     super(dsConfig);
