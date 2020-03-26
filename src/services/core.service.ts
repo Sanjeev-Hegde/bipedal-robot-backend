@@ -1,14 +1,34 @@
-import { bind, /* inject, */ BindingScope } from '@loopback/core';
+import { bind, BindingScope, service } from '@loopback/core';
+import { Pwm } from './pwm.service';
 
-@bind({ scope: BindingScope.TRANSIENT })
+@bind({ scope: BindingScope.SINGLETON })
 export class Core {
-  constructor(/* Add @inject to inject parameters */) { }
+  pwm: Pwm;
+  isInitialized: boolean;
+  constructor(@service(Pwm) pwm: Pwm) {
+    this.pwm = pwm;
+    this.initializePWM();
+  }
 
   /*
    * Add service methods here
    */
 
-  initializeServos() {
-    //TODO: get servo objects from database and initialize servos
+  initializePWM() {
+    this.pwm.initialize().then(() => {
+      this.setInitialized(true);
+      console.log("initialized:::" + this.getIsInitialized());
+    }).catch(() => {
+      console.log("Couldnt initialize pwm");
+      process.exit(-1);
+    })
+  }
+
+  setInitialized(isInitialized: boolean) {
+    this.isInitialized = isInitialized;
+  }
+
+  getIsInitialized() {
+    return this.isInitialized;
   }
 }

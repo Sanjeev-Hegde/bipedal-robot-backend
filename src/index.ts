@@ -1,7 +1,5 @@
 import { BipedalRobotBackendApplication } from './application';
 import { ApplicationConfig } from '@loopback/core';
-import { Pwm } from './services';
-
 export { BipedalRobotBackendApplication };
 
 export async function main(options: ApplicationConfig = {}) {
@@ -11,7 +9,6 @@ export async function main(options: ApplicationConfig = {}) {
   await app.start();
 
   const url = app.restServer.url;
-  // new Pwm();
   console.log(`Server is running at ${url}`);
   console.log(`Try ${url}/ping`);
   return app;

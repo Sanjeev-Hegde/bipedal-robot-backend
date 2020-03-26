@@ -1,5 +1,5 @@
 import { bind, /* inject, */ BindingScope } from '@loopback/core';
-import Pca9685Driver from 'pca9685';
+var Pca9685Driver = require("pca9685").Pca9685Driver;
 const i2cBus = require('i2c-bus');
 
 @bind({ scope: BindingScope.SINGLETON })
@@ -10,24 +10,30 @@ export class Pwm {
     frequency: 50,
     debug: true
   };
-  pwm: Pca9685Driver;
-
+  pwm: any;
   constructor(/* Add @inject to inject parameters */) {
-    console.log("Initializing pwm")
-    this.pwm = new Pca9685Driver(this.options, function startLoop(err) {
-      if (err) {
-        console.error("Error initializing PCA9685");
-        process.exit(-1);
-      }
-    });
-  }
 
+  }
+  initialize(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      //console.log("Initializing pwm")
+      this.pwm = new Pca9685Driver(this.options, function startLoop(err: any) {
+        if (err) {
+          console.error("Error initializing PCA9685");
+          // process.exit(-1);
+          reject(false);
+        }
+        resolve(true);
+      });
+    });
+
+  }
   dispose() {
     console.log("\nGracefully shutting down from SIGINT (Ctrl-C)");
     this.pwm.dispose();
   }
 
-  getPWM(): Pca9685Driver {
+  getPWM(): any {
     return this.pwm;
   }
   /*
