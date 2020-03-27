@@ -46,6 +46,11 @@ export class PingController {
   })
   ping(): object {
     // Reply with a greeting, the current time, the url, and request headers
+    // if (this.core.getIsInitialized()) this.core.pwm.setPulseLength(1, 1500).then(() => {
+    //   console.log("Set pulse length successfully");
+    // }).catch((err) => {
+    //   console.log("Couldnt move:" + err);
+    // })
     return {
       greeting: 'Hello from LoopBack',
       date: new Date(),
