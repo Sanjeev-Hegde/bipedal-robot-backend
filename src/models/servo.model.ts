@@ -17,13 +17,11 @@ export class Servo extends Entity {
 
   @property({
     type: 'number',
-    default: 90,
-  })
-  initialPosition?: number;
-
-  @property({
-    type: 'number',
     required: true,
+    jsonSchema: {
+      minimum: 0,
+      maximum: 15
+    }
   })
   channel: number;
 
@@ -38,6 +36,11 @@ export class Servo extends Entity {
     required: true,
   })
   maxPulseLength: number;
+
+  @property({
+    type: 'number',
+  })
+  pca9685Id?: number;
 
   constructor(data?: Partial<Servo>) {
     super(data);
