@@ -1,22 +1,21 @@
-import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
-import {Action, ActionRelations, Motion} from '../models';
-import {BipedalRobotDbDataSource} from '../datasources';
-import {inject, Getter} from '@loopback/core';
-import {MotionRepository} from './motion.repository';
+import { DefaultCrudRepository, repository, HasManyRepositoryFactory } from '@loopback/repository';
+import { Action, ActionRelations, ServoMotion } from '../models';
+import { BipedalRobotDbDataSource } from '../datasources';
+import { inject, Getter } from '@loopback/core';
+import { ServoMotionRepository } from './servo-motion.repository';
 
 export class ActionRepository extends DefaultCrudRepository<
   Action,
   typeof Action.prototype.id,
   ActionRelations
-> {
-
-  public readonly motions: HasManyRepositoryFactory<Motion, typeof Action.prototype.id>;
+  > {
+  public readonly servoMotions: HasManyRepositoryFactory<ServoMotion, typeof Action.prototype.id>;
 
   constructor(
-    @inject('datasources.bipedalRobotDB') dataSource: BipedalRobotDbDataSource, @repository.getter('MotionRepository') protected motionRepositoryGetter: Getter<MotionRepository>,
+    @inject('datasources.bipedalRobotDB') dataSource: BipedalRobotDbDataSource, @repository.getter('ServoMotionRepository') protected servoMotionRepositoryGetter: Getter<ServoMotionRepository>,
   ) {
     super(Action, dataSource);
-    this.motions = this.createHasManyRepositoryFactoryFor('motions', motionRepositoryGetter,);
-    this.registerInclusionResolver('motions', this.motions.inclusionResolver);
+    this.servoMotions = this.createHasManyRepositoryFactoryFor('servoMotions', servoMotionRepositoryGetter);
+    this.registerInclusionResolver('servoMotions', this.servoMotions.inclusionResolver);
   }
 }

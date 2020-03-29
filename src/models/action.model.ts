@@ -1,5 +1,5 @@
 import { Entity, model, property, hasMany } from '@loopback/repository';
-import { Motion } from './motion.model';
+import { ServoMotion } from './servo-motion.model';
 
 @model()
 export class Action extends Entity {
@@ -37,8 +37,8 @@ export class Action extends Entity {
   })
   movementId?: number;
 
-  @hasMany(() => Motion)
-  motions: Motion[];
+  @hasMany(() => ServoMotion)
+  servoMotions: ServoMotion[];
   // Define well-known properties here
 
   constructor(data?: Partial<Action>) {

@@ -1,7 +1,7 @@
-import { Entity, model, property } from '@loopback/repository';
+import {Entity, model, property} from '@loopback/repository';
 
 @model()
-export class Motion extends Entity {
+export class ServoMotion extends Entity {
   @property({
     type: 'number',
     id: true,
@@ -30,15 +30,14 @@ export class Motion extends Entity {
     type: 'number',
   })
   actionId?: number;
-  // Define well-known properties here
 
-  constructor(data?: Partial<Motion>) {
+  constructor(data?: Partial<ServoMotion>) {
     super(data);
   }
 }
 
-export interface MotionRelations {
+export interface ServoMotionRelations {
   // describe navigational properties here
 }
 
-export type MotionWithRelations = Motion & MotionRelations;
+export type ServoMotionWithRelations = ServoMotion & ServoMotionRelations;

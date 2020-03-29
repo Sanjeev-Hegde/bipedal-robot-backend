@@ -1,16 +1,16 @@
 import {DefaultCrudRepository} from '@loopback/repository';
-import {Motion, MotionRelations} from '../models';
+import {ServoMotion, ServoMotionRelations} from '../models';
 import {BipedalRobotDbDataSource} from '../datasources';
 import {inject} from '@loopback/core';
 
-export class MotionRepository extends DefaultCrudRepository<
-  Motion,
-  typeof Motion.prototype.id,
-  MotionRelations
+export class ServoMotionRepository extends DefaultCrudRepository<
+  ServoMotion,
+  typeof ServoMotion.prototype.id,
+  ServoMotionRelations
 > {
   constructor(
     @inject('datasources.bipedalRobotDB') dataSource: BipedalRobotDbDataSource,
   ) {
-    super(Motion, dataSource);
+    super(ServoMotion, dataSource);
   }
 }
