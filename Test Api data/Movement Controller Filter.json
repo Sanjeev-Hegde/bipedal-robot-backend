@@ -1,0 +1,17 @@
+{
+  "include": [
+    {
+      "relation": "actions",
+      "scope": {
+        "order": [
+          "sequenceId ASC"
+        ],
+        "include": [
+          {
+            "relation": "motions"
+          }
+        ]
+      }
+    }
+  ]
+}
