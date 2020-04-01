@@ -1,34 +1,62 @@
 import { bind, BindingScope, service } from '@loopback/core';
 import { Pwm } from './pwm.service';
+import { Pca9685, Servo } from '../models';
 
+
+export class PwmServoMap {
+  pwm: Pwm;
+  servoMap: Map<number, Servo>
+}
 @bind({ scope: BindingScope.SINGLETON })
 export class Core {
-  pwm: Pwm;
+  pca9685Map: Map<number, PwmServoMap>
   isInitialized: boolean;
-  constructor(@service(Pwm) pwm: Pwm) {
-    this.pwm = pwm;
-    this.initializePWM();
+  constructor() {
+    this.pca9685Map = new Map();
   }
 
   /*
    * Add service methods here
    */
 
-  initializePWM() {
-    this.pwm.initialize().then(() => {
-      this.setInitialized(true);
-      console.log("initialized:::" + this.getIsInitialized());
-    }).catch(() => {
-      console.log("Couldnt initialize pwm");
-      process.exit(-1);
-    })
+  initializePWMs(pca9685List: Array<Pca9685>) {
+    pca9685List.forEach(pca9685 => {
+      let pca9685Id = pca9685.getId();
+      if (this.pca9685Map.get(pca9685Id)) {
+        console.log("Pca9685:" + pca9685Id + " already initialized");
+      }
+      else {
+        let pwm = new Pwm();
+        pwm.initialize().then(() => {
+          // this.pca9685Map.set(pca9685Id, new Map());
+          let pwmServoMap = new PwmServoMap();
+          pwmServoMap.pwm = pwm;
+          pwmServoMap.servoMap = new Map();
+          pca9685.servos.forEach(servo => {
+            pwmServoMap.servoMap.set(servo.getId(), servo);
+          });
+          this.pca9685Map.set(pca9685Id, pwmServoMap);
+          console.log("Pca9685:" + pca9685Id + " initialized");
+        });
+      }
+    });
   }
 
-  setInitialized(isInitialized: boolean) {
-    this.isInitialized = isInitialized;
+  moveServo(pwm: Pwm, servo: Servo, angle: number) {
+    let diff = (1500 - servo.minPulseLength);
+    let finalPosition = (angle * diff / 90) + servo.minPulseLength;
+    pwm.setPulseLength(servo.channel, finalPosition);
   }
 
-  getIsInitialized() {
-    return this.isInitialized;
+  getIsInitialized(pca9685Id: number): boolean {
+    return this.pca9685Map.get(pca9685Id) ? true : false;
+  }
+
+  getInitializedPca9685s(pca9685List: Array<Pca9685>): Map<number, boolean> {
+    let initializedMap: Map<number, boolean> = new Map();
+    pca9685List.forEach(pca9685 => {
+      this.pca9685Map.get(pca9685.getId()) ? initializedMap.set(pca9685.getId(), true) : initializedMap.set(pca9685.getId(), false);
+    });
+    return initializedMap;
   }
 }

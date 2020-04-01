@@ -3,7 +3,7 @@ var Pca9685Driver = require("pca9685").Pca9685Driver;
 //import Pca9685Driver from 'pca9685'
 const i2cBus = require('i2c-bus');
 
-@bind({ scope: BindingScope.SINGLETON })
+//@bind({ scope: BindingScope.TRANSIENT })
 export class Pwm {
   private options = {
     i2c: i2cBus.openSync(1),

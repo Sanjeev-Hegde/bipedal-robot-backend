@@ -55,8 +55,7 @@ export class PingController {
       greeting: 'Hello from LoopBack',
       date: new Date(),
       url: this.req.url,
-      headers: Object.assign({}, this.req.headers),
-      pwmInitialized: this.core.getIsInitialized()
+      headers: Object.assign({}, this.req.headers)
     };
   }
 }

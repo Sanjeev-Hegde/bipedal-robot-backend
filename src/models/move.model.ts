@@ -5,7 +5,6 @@ export class Move extends Model {
 
   @property({
     type: 'number',
-    required: true,
   })
   movementId: number;
 

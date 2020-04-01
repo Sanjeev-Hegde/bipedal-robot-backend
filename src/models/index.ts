@@ -6,3 +6,4 @@ export * from './movement.model';
 export * from './action.model';
 export * from './move.model';
 export * from './servo-motion.model';
+export * from './pca-9685-id-wrapper.model';
