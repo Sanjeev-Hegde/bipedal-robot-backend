@@ -12,3 +12,6 @@ export * from './servo-motion-move.controller';
 export * from './action-servo-motion.controller';
 export * from './servo-motion.controller';
 export * from './pca-9685-servo-move-controller.controller';
+export * from './robot-pca9685.controller';
+export * from './robot-movement.controller';
+export * from './robot.controller';

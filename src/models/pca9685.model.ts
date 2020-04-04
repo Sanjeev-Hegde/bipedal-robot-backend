@@ -33,6 +33,11 @@ export class Pca9685 extends Entity {
   @hasMany(() => Servo)
   servos: Servo[];
 
+  @property({
+    type: 'number',
+  })
+  robotId?: number;
+
   constructor(data?: Partial<Pca9685>) {
     super(data);
   }

@@ -1,7 +1,7 @@
 {
   "name": "bipedal-robot-backend",
   "version": "1.0.0",
-  "description": "Backend Api Server to controll bipedal robot server remotley ",
+  "description": "Backend Api Server to controll a robot remotley",
   "keywords": [
     "loopback-application",
     "loopback"

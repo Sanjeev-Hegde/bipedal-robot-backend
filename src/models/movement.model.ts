@@ -25,6 +25,11 @@ export class Movement extends Entity {
   @hasMany(() => Action)
   actions: Action[];
 
+  @property({
+    type: 'number',
+  })
+  robotId?: number;
+
   constructor(data?: Partial<Movement>) {
     super(data);
   }
