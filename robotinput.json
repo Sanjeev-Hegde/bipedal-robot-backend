@@ -1,0 +1,31 @@
+{
+  "include": [
+    {
+      "relation": "movements",
+      "scope": {
+        "include": [
+          {
+            "relation": "actions",
+            "scope": {
+              "include": [
+                {
+                  "relation": "servoMotions"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "relation": "pca9685s",
+      "scope": {
+        "include": [
+          {
+            "relation": "servos"
+          }
+        ]
+      }
+    }
+  ]
+}
