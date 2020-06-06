@@ -2,10 +2,12 @@ import { bind, BindingScope, service } from '@loopback/core';
 import { Pwm } from './pwm.service';
 import { Pca9685, Servo } from '../models';
 
-
+export class ServoHelper extends Servo {
+  currentPosition?: number;
+}
 export class PwmServoMap {
   pwm: Pwm;
-  servoMap: Map<number, Servo>
+  servoMap: Map<number, ServoHelper>
 }
 @bind({ scope: BindingScope.SINGLETON })
 export class Core {
@@ -42,10 +44,47 @@ export class Core {
     });
   }
 
-  moveServo(pwm: Pwm, servo: Servo, angle: number) {
+  moveServo(pwm: Pwm, servo: ServoHelper, angle: number, speed?: number) {
     let diff = (1500 - servo.minPulseLength);
     let finalPosition = (angle * diff / 90) + servo.minPulseLength;
-    pwm.setPulseLength(servo.channel, finalPosition);
+    let sp = speed ? speed : 8;
+    if (!servo.currentPosition) {
+      pwm.setPulseLength(servo.channel, finalPosition);
+      servo.currentPosition = finalPosition;
+    }
+    else {
+      let currentPosition = servo.currentPosition;
+      if (servo.currentPosition < finalPosition) {
+        let intervalId = setInterval(() => {
+          currentPosition = currentPosition + sp;
+          if (currentPosition >= finalPosition) {
+            currentPosition = finalPosition;
+            pwm.setPulseLength(servo.channel, finalPosition);
+            servo.currentPosition = currentPosition;
+            clearInterval(intervalId);
+          }
+          else {
+            pwm.setPulseLength(servo.channel, currentPosition);
+            servo.currentPosition = currentPosition;
+          }
+        }, 20)
+      }
+      else {
+        let intervalId = setInterval(() => {
+          currentPosition = currentPosition - sp;
+          if (currentPosition <= finalPosition) {
+            currentPosition = finalPosition;
+            pwm.setPulseLength(servo.channel, finalPosition);
+            servo.currentPosition = currentPosition;
+            clearInterval(intervalId);
+          }
+          else {
+            pwm.setPulseLength(servo.channel, currentPosition);
+            servo.currentPosition = currentPosition;
+          }
+        }, 20)
+      }
+    }
   }
 
   getIsInitialized(pca9685Id: number): boolean {

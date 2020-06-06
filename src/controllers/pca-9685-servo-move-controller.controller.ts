@@ -18,7 +18,7 @@ export class Pca9685ServoMoveControllerController {
     this.coreService = core;
   }
 
-  @put('/pca9685s/{pcaId}/servos/{servoId}/move/{angle}', {
+  @put('/pca9685s/{pcaId}/servos/{servoId}/move/{angle}/speed/{speed}', {
     responses: {
       '200': {
         description: 'Pca9685.Servo.Move PUT success',
@@ -29,14 +29,15 @@ export class Pca9685ServoMoveControllerController {
   async moveServo(
     @param.path.number('pcaId') pcaId: number,
     @param.path.number('servoId') servoId: number,
-    @param.path.number('angle') angle: number
+    @param.path.number('angle') angle: number,
+    @param.path.number('speed') speed: number,
   ): Promise<Move> {
     console.log("pcaId:" + pcaId);
     console.log("servoId:" + servoId);
     let pwmServoMap = this.coreService.pca9685Map.get(pcaId);
     let servo = pwmServoMap?.servoMap.get(servoId);
     if (pwmServoMap && servo) {
-      this.coreService.moveServo(pwmServoMap.pwm, servo, angle);
+      this.coreService.moveServo(pwmServoMap.pwm, servo, angle, speed);
       return new Move({ status: "moving servo " });
     }
     else {
