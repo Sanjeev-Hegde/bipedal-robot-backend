@@ -11,12 +11,6 @@ export class Action extends Entity {
   id?: number;
 
   @property({
-    type: 'number',
-    required: true,
-  })
-  sequenceId: number;
-
-  @property({
     type: 'string',
     required: true,
   })

@@ -70,6 +70,44 @@ export class ActionServoMotionController {
     return this.actionRepository.servoMotions(id).create(servoMotion);
   }
 
+  @post('/actions/{id}/servo-motions/list', {
+    responses: {
+      '200': {
+        description: 'Action model instance',
+        content: {
+          'application/json': {
+            schema:
+            {
+              type: 'array', items: getModelSchemaRef(ServoMotion)
+            }
+          }
+        },
+      },
+    },
+  })
+  async createList(
+    @param.path.number('id') id: typeof Action.prototype.id,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            type: 'array',
+            items: getModelSchemaRef(ServoMotion, {
+              title: 'NewServoMotionInAction',
+              exclude: ['id'],
+              optional: ['actionId']
+            })
+          },
+        },
+      },
+    }) servoMotions: Omit<ServoMotion, 'id'>[],
+  ): Promise<void> {
+    servoMotions.forEach(servoMotion => {
+      this.actionRepository.servoMotions(id).create(servoMotion);
+    })
+    return;
+  }
+
   @patch('/actions/{id}/servo-motions', {
     responses: {
       '200': {
